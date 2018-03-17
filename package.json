@@ -1,5 +1,5 @@
 {
-  "name": "wordhooont",
+  "name": "wooordhunt",
   "version": "1.0.0",
   "main": "index.js",
   "author": "vviital <vviital@tut.by>",
@@ -12,8 +12,16 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
+    "history": "^4.7.2",
     "lodash": "^4.17.5",
-    "moment": "^2.21.0"
+    "material-ui": "^0.20.0",
+    "moment": "^2.21.0",
+    "prop-types": "^15.6.1",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "eslint": "^4.19.0",

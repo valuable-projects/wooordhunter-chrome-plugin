@@ -4,7 +4,7 @@
   "description": "Wooordhunt plugin for words search",
   "version": "0.1",
   "browser_action": {
-    "default_icon": "./icon.png",
-    "default_popup": "./index.html"
+    "default_icon": "build/icon.png",
+    "default_popup": "build/index.html"
   }
 }
