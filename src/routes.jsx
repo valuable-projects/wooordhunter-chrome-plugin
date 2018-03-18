@@ -5,8 +5,11 @@ import { Provider } from 'react-redux';
 import createHistory from 'history/createBrowserHistory';
 import { Route } from 'react-router';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import createSagaMiddleware from 'redux-saga';
+import { createLogger } from 'redux-logger';
 
 import reducers from './services/reducers';
+import sagas from './services/sagas';
 
 import './index.css';
 
@@ -16,15 +19,19 @@ import Search from './features/Search';
 
 const history = createHistory();
 
+const logger = createLogger({ collapsed: true, diff: true });
 const middleware = routerMiddleware(history);
+const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   combineReducers({
     ...reducers,
     router: routerReducer,
   }),
-  applyMiddleware(middleware)
+  applyMiddleware(middleware, sagaMiddleware, logger)
 );
+
+sagaMiddleware.run(sagas);
 
 ReactDOM.render(
   <Provider store={store}>

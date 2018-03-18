@@ -1,3 +1,5 @@
+import searchReducer from '../../features/Search/services/reducers';
+
 export default ({
-  reducer: () => ({ redux: true }),
+  search: searchReducer,
 });

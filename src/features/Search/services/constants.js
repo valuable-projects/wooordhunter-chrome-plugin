@@ -1,0 +1,9 @@
+export const START_LOAD_WORD = Symbol('START_LOAD_WORD');
+export const FINISHED_LOAD_WORD = Symbol('FINISHED_LOAD_WORD');
+export const FAILURE_LOAD_WORD = Symbol('FAILURE_LOAD_WORD');
+
+export const START_LOAD_WORD_TIPS = Symbol('START_LOAD_WORD_TIPS');
+export const FINISHED_LOAD_WORD_TIPS = Symbol('FINISHED_LOAD_WORD_TIPS');
+export const FAILURE_LOAD_WORD_TIPS = Symbol('FAILURE_LOAD_WORD_TIPS');
+
+export const UPDATE_WORD = Symbol('UPDATE_WORD');

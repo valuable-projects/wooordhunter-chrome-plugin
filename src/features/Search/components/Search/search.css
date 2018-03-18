@@ -1,0 +1,10 @@
+.search-body {
+  display: flex;
+  height: 70px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.search-body > div {
+  width: 95%!important;
+}
