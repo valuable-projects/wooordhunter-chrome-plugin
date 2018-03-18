@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import Sound from 'react-sound';
+
 import SearchComponent from './components/Search';
 import WordTranslation from './components/WordTranslation';
 
@@ -27,6 +29,19 @@ class Search extends PureComponent {
     }).isRequired,
   };
 
+  state = {
+    playerStatus: {
+      uk: Sound.status.STOPPED,
+      us: Sound.status.STOPPED,
+    },
+  };
+
+  onChangePlayerStatus = (key, status) => {
+    const { playerStatus } = this.state;
+
+    this.setState({ ...this.state, playerStatus: { ...playerStatus, [key]: status } });
+  };
+
   render() {
     return (
       <div>
@@ -36,7 +51,11 @@ class Search extends PureComponent {
           updateText={this.props.callbacks.updateText}
           translateWord={this.props.callbacks.translateWord}
         />
-        <WordTranslation wordInfo={this.props.wordInfo} />
+        <WordTranslation
+          wordInfo={this.props.wordInfo}
+          playerStatus={this.state.playerStatus}
+          onChangePlayerStatus={this.onChangePlayerStatus}
+        />
       </div>
     );
   }

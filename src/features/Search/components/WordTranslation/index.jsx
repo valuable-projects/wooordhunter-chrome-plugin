@@ -5,10 +5,9 @@ import isEmpty from 'lodash/isEmpty';
 
 import Volume from 'material-ui/svg-icons/av/volume-up';
 
-const link = 'http://wooordhunt.ru/data/sound/word/uk/mp3/word.mp3';
+import SoundPlayer from './components/SoundPlayer';
 
-console.log(Sound.status.PLAYING);
-console.log(Sound.status);
+const link = 'http://wooordhunt.ru/data/sound/word/uk/mp3/word.mp3';
 
 export default class WordTranslation extends PureComponent {
   static propTypes = {
@@ -29,6 +28,7 @@ export default class WordTranslation extends PureComponent {
       us: PropTypes.oneOf([Sound.status.PLAYING, Sound.status.STOPPED, Sound.status.PAUSED])
         .isRequired,
     }),
+    onChangePlayerStatus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -36,6 +36,14 @@ export default class WordTranslation extends PureComponent {
       uk: Sound.status.STOPPED,
       us: Sound.status.STOPPED,
     },
+  };
+
+  onFinish = (key) => {
+    this.props.onChangePlayerStatus(key, Sound.status.STOPPED);
+  };
+
+  onPlayerClick = (key) => {
+    this.props.onChangePlayerStatus(key, Sound.status.PLAYING);
   };
 
   render() {
@@ -46,10 +54,37 @@ export default class WordTranslation extends PureComponent {
     return (
       <div>
         <div>
-          {wordInfo.transcription.uk} <Sound url={link} playStatus={playerStatus.uk} />
-          {wordInfo.transcription.uk} <Sound url={link} playStatus={playerStatus.uk} />
+          <SoundPlayer
+            description="брит."
+            id="uk"
+            onClick={this.onPlayerClick}
+            onFinish={this.onFinish}
+            playerStatus={playerStatus.uk}
+            soundUrl={`http://wooordhunt.ru/data/sound/word/uk/mp3/${wordInfo.word}.mp3`}
+            transcription={wordInfo.transcription.uk}
+          />
+          <SoundPlayer
+            description="амер."
+            id="us"
+            onClick={this.onPlayerClick}
+            onFinish={this.onFinish}
+            playerStatus={playerStatus.us}
+            soundUrl={`http://wooordhunt.ru/data/sound/word/us/mp3/${wordInfo.word}.mp3`}
+            transcription={wordInfo.transcription.us}
+          />
         </div>
-        <Volume /> {JSON.stringify(this.props.wordInfo)}
+        <div>
+          <h3>Существительное</h3>
+          {wordInfo.nouns.map(line => <div key={line}>{line}</div>)}
+        </div>
+        <div>
+          <h3>Глагол</h3>
+          {wordInfo.verbs.map(line => <div key={line}>{line}</div>)}
+        </div>
+        <div>
+          <h3>Словосочетания</h3>
+          {wordInfo.phrases.map(line => <div key={line}>{line}</div>)}
+        </div>
       </div>
     );
   }
