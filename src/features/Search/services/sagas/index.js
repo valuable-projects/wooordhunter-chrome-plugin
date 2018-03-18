@@ -8,16 +8,28 @@ import {
   FINISHED_LOAD_WORD_TIPS,
   FAILURE_LOAD_WORD_TIPS,
 } from '../constants';
+import parse from '../parseWooordhuntPage';
 
 const searchApi = 'http://wooordhunt.ru/word/';
 const tipsApi = 'http://wooordhunt.ru/get_tips.php?abc=';
 
+const proxyUrl = 'http://localhost:8000/';
+
 function* fetchWord(action) {
   try {
-    const response = yield call(fetch, searchApi + action.payload.word);
+    const word = action.payload.word.toLocaleLowerCase();
+    const headers = { 'Wooorhunt-Destination-Header': searchApi + word };
+    const response = yield call(fetch, proxyUrl, { headers });
 
-    yield put({ type: FINISHED_LOAD_WORD, payload: response });
+    const text = yield call(response.text.bind(response));
+
+    const parsedPage = yield call(parse, word, text);
+
+    console.log('parsedPage', parsedPage);
+
+    yield put({ type: FINISHED_LOAD_WORD, payload: { wordInfo: parsedPage } });
   } catch (err) {
+    console.log('err', err);
     yield put({ type: FAILURE_LOAD_WORD });
   }
 }
@@ -25,9 +37,8 @@ function* fetchWord(action) {
 function* fetchWordTips(action) {
   try {
     const word = action.payload.word.toLocaleLowerCase();
-    const url = 'http://localhost:8000/';
     const headers = { 'Wooorhunt-Destination-Header': tipsApi + word };
-    const response = yield call(fetch, url, { headers });
+    const response = yield call(fetch, proxyUrl, { headers });
 
     const data = yield call(response.json.bind(response));
 

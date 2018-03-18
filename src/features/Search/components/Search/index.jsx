@@ -10,24 +10,30 @@ export default class Search extends PureComponent {
     text: PropTypes.string.isRequired,
     tips: PropTypes.arrayOf(PropTypes.string).isRequired,
     updateText: PropTypes.func.isRequired,
+    translateWord: PropTypes.func.isRequired,
+  };
+
+  translateWord = (event) => {
+    event.preventDefault();
+    this.props.translateWord(this.props.text);
   };
 
   render() {
     const { text, tips } = this.props;
 
     return (
-      <div className="search-body">
+      <form className="search-body" onSubmit={this.translateWord}>
         <AutoComplete
-          hintText="Введите слово для поиска"
-          searchText={text}
-          onUpdateInput={this.props.updateText}
           dataSource={tips}
-          openOnFocus={true}
           filter={() => true}
-          maxSearchResults={5}
           fullWidth
+          hintText="Введите слово для поиска"
+          maxSearchResults={5}
+          onUpdateInput={this.props.updateText}
+          openOnFocus
+          searchText={text}
         />
-      </div>
+      </form>
     );
   }
 }
