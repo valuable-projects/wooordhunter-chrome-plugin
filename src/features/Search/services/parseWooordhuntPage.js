@@ -5,6 +5,7 @@ const getMeaning = (content, marker) => {
 
   node.find('#pos_noun').removeClass('hidden');
   node.find('.hidden').remove();
+  node.find('.more').remove();
 
   return node
     .text()
@@ -13,13 +14,16 @@ const getMeaning = (content, marker) => {
     .filter(v => v);
 };
 
-const getPhrases = content =>
-  content
+const getPhrases = (content) => {
+  content.find('.snoska').remove();
+
+  return content
     .find('.block.phrases')
     .text()
     .split('  ')
     .map(v => v.trim())
     .filter(v => v);
+};
 
 export default async (word, html) => {
   const $ = jquery('<div></div>').append(html);
