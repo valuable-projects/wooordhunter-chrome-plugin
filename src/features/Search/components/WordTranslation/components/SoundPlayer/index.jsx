@@ -28,6 +28,8 @@ export default class SoundPlayer extends PureComponent {
   };
 
   render() {
+    if (!this.props.transcription) return <div />;
+
     return (
       <div className="sound-player-container">
         <div className="sound-player-text">{this.props.description}</div>
