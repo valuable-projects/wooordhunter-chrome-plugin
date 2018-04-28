@@ -9,14 +9,16 @@ export default class Search extends PureComponent {
   static propTypes = {
     text: PropTypes.string.isRequired,
     tips: PropTypes.arrayOf(PropTypes.string).isRequired,
-    updateText: PropTypes.func.isRequired,
     translateWord: PropTypes.func.isRequired,
+    updateText: PropTypes.func.isRequired,
   };
 
   translateWord = (event) => {
     event.preventDefault();
     this.props.translateWord(this.props.text);
   };
+
+  searchWord = text => this.props.translateWord(text);
 
   render() {
     const { text, tips } = this.props;
@@ -32,6 +34,7 @@ export default class Search extends PureComponent {
           onUpdateInput={this.props.updateText}
           openOnFocus
           searchText={text}
+          onNewRequest={this.searchWord}
         />
       </form>
     );
