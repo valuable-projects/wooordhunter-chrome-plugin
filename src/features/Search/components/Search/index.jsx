@@ -31,10 +31,10 @@ export default class Search extends PureComponent {
           fullWidth
           hintText="Введите слово для поиска"
           maxSearchResults={5}
+          onNewRequest={this.searchWord}
           onUpdateInput={this.props.updateText}
           openOnFocus
           searchText={text}
-          onNewRequest={this.searchWord}
         />
       </form>
     );

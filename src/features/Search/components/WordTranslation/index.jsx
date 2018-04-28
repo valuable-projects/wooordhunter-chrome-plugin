@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import Sound from 'react-sound';
 import isEmpty from 'lodash/isEmpty';
 
-import Volume from 'material-ui/svg-icons/av/volume-up';
-
 import SoundPlayer from './components/SoundPlayer';
 
-const link = 'http://wooordhunt.ru/data/sound/word/uk/mp3/word.mp3';
+import SingleWordTranslation from './components/SingleWordTranslation';
+import SingleSentenceExample from './components/SingleSentenceExample';
+
+import './translation.css';
 
 export default class WordTranslation extends PureComponent {
   static propTypes = {
@@ -46,6 +47,18 @@ export default class WordTranslation extends PureComponent {
     this.props.onChangePlayerStatus(key, Sound.status.PLAYING);
   };
 
+  get hasNounMeaning() {
+    const { wordInfo } = this.props;
+
+    return !isEmpty(wordInfo.nouns);
+  }
+
+  get hasVerbMeaning() {
+    const { wordInfo } = this.props;
+
+    return !isEmpty(wordInfo.verbs);
+  }
+
   render() {
     const { wordInfo, playerStatus } = this.props;
 
@@ -73,17 +86,21 @@ export default class WordTranslation extends PureComponent {
             transcription={wordInfo.transcription.us}
           />
         </div>
+        {this.hasNounMeaning && (
+          <div>
+            <h3 className="word-translation-title">Существительное</h3>
+            {wordInfo.nouns.map((text, index) => <SingleWordTranslation key={index} text={text} />)}
+          </div>
+        )}
+        {this.hasVerbMeaning && (
+          <div>
+            <h3 className="word-translation-title">Глагол</h3>
+            {wordInfo.verbs.map((text, index) => <SingleWordTranslation key={index} text={text} />)}
+          </div>
+        )}
         <div>
-          <h3>Существительное</h3>
-          {wordInfo.nouns.map(line => <div key={line}>{line}</div>)}
-        </div>
-        <div>
-          <h3>Глагол</h3>
-          {wordInfo.verbs.map(line => <div key={line}>{line}</div>)}
-        </div>
-        <div>
-          <h3>Словосочетания</h3>
-          {wordInfo.phrases.map(line => <div key={line}>{line}</div>)}
+          <h3 className="word-translation-title">Словосочетания</h3>
+          {wordInfo.phrases.map((text, index) => <SingleSentenceExample key={index} text={text} />)}
         </div>
       </div>
     );

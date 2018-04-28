@@ -5,6 +5,8 @@ import Sound from 'react-sound';
 import Volume from 'material-ui/svg-icons/av/volume-up';
 import IconButton from 'material-ui/IconButton';
 
+import './player.css';
+
 export default class SoundPlayer extends PureComponent {
   static propTypes = {
     playerStatus: PropTypes.oneOf([Sound.status.PLAYING, Sound.status.STOPPED, Sound.status.PAUSED])
@@ -27,8 +29,9 @@ export default class SoundPlayer extends PureComponent {
 
   render() {
     return (
-      <div>
-        {this.props.description}
+      <div className="sound-player-container">
+        <div className="sound-player-text">{this.props.description}</div>
+        <div className="sound-player-text">{this.props.transcription}</div>
         <IconButton onClick={this.onClick}>
           <Volume />
           <Sound
@@ -37,7 +40,6 @@ export default class SoundPlayer extends PureComponent {
             onFinishedPlaying={this.onFinish}
           />
         </IconButton>
-        {this.props.transcription}
       </div>
     );
   }

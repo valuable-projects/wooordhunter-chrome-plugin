@@ -26,12 +26,14 @@ class Layout extends PureComponent {
   }
 
   render() {
-    return (<MuiThemeProvider>
-      <div className="layout-body">
-        <Header />
-        {this.props.children}
-     </div>
-    </MuiThemeProvider>);
+    return (
+      <MuiThemeProvider>
+        <div className="layout-body">
+          <Header />
+          {this.props.children}
+        </div>
+      </MuiThemeProvider>
+    );
   }
 }
 

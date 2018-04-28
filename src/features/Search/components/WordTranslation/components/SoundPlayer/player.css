@@ -1,0 +1,10 @@
+.sound-player-container {
+  display: flex;
+  padding: 0 12px;
+}
+
+.sound-player-text {
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+}
