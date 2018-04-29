@@ -5,22 +5,31 @@ export default class WordsHistory {
     this.db = new Dexie();
 
     this.db.version(1).stores({
-      wordsHistory: '++id, &word',
+      wordsHistory: '++id, &word, updatedAt',
     });
 
     this.db.open();
   }
 
   async save(object) {
-    await this.db.wordsHistory.add(object);
+    await this.db.wordsHistory.add({ ...object, updatedAt: new Date() });
   }
 
   async getAll() {
-    return this.db.wordsHistory.toArray();
+    return this.db.wordsHistory
+      .orderBy('updatedAt')
+      .reverse()
+      .toArray();
   }
 
   async getByWord(word) {
-    return this.db.wordsHistory.get({ word });
+    const record = await this.db.wordsHistory.get({ word });
+
+    if (record) {
+      await this.db.wordsHistory.update(record.id, { updatedAt: new Date() });
+    }
+
+    return record;
   }
 
   async deleteById(id) {
