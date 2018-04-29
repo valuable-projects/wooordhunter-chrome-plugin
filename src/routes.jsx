@@ -14,9 +14,9 @@ import sagas from './services/sagas';
 import './index.css';
 
 import Layout from './features/Layout';
-import App from './features/App';
 import Search from './features/Search';
 import History from './features/History';
+import Settings from './features/Settings';
 
 const history = createHistory();
 
@@ -40,7 +40,7 @@ ReactDOM.render(
       <Layout>
         <Route exact path="/" component={Search} />
         <Route path="/history" component={History} />
-        <Route path="/settings" component={App} />
+        <Route path="/settings" component={Settings} />
       </Layout>
     </ConnectedRouter>
   </Provider>,

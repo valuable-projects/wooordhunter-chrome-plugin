@@ -60,4 +60,8 @@ export default class WordsHistory {
       .equals(id)
       .delete();
   }
+
+  async clear() {
+    return this.db.wordsHistory.clear();
+  }
 }
