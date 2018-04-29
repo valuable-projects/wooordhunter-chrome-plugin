@@ -11,9 +11,10 @@ import WordsHistory from '../../../../services/dao/WordsHistory';
 
 const Words = new WordsHistory();
 
-export function* getWordFromHistory() {
+export function* getWordFromHistory(action) {
   try {
-    const words = yield call(Words.getAll.bind(Words));
+    const { query } = action.payload;
+    const words = yield call(Words.getAll.bind(Words), query);
 
     yield put({
       type: GET_WORDS_FROM_HISTORY_SUCCESS,

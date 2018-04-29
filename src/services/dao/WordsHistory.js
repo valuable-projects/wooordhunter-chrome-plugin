@@ -1,4 +1,14 @@
 import Dexie from 'dexie';
+import Fuse from 'fuse.js';
+
+const fuseSearchOptions = {
+  shouldSort: true,
+  threshold: 0.6,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  keys: ['word'],
+};
 
 export default class WordsHistory {
   constructor() {
@@ -15,11 +25,23 @@ export default class WordsHistory {
     await this.db.wordsHistory.add({ ...object, updatedAt: new Date() });
   }
 
-  async getAll() {
+  async getAllRaw() {
     return this.db.wordsHistory
       .orderBy('updatedAt')
       .reverse()
       .toArray();
+  }
+
+  async getAll(query) {
+    const words = await this.getAllRaw();
+
+    if (query) {
+      const fuse = new Fuse(words, fuseSearchOptions);
+
+      return fuse.search(query);
+    }
+
+    return words;
   }
 
   async getByWord(word) {

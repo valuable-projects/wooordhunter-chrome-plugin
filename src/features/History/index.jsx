@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import debounce from 'lodash/debounce';
 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -8,6 +9,7 @@ import { push } from 'react-router-redux';
 import { GET_WORDS_FROM_HISTORY, DELETE_WORD_FROM_HISTORY } from './services/constants';
 
 import HistoryLine from './components/HistoryLine';
+import Search from './components/Search';
 
 class History extends PureComponent {
   static propTypes = {
@@ -24,16 +26,29 @@ class History extends PureComponent {
     words: [],
   };
 
+  state = {
+    query: '',
+  };
+
   componentDidMount() {
     this.props.getWordsFromHistory();
   }
 
-  translateWord = (word) => {
-    this.props.push(`/?word=${word}`);
-  };
+  getWordsFromHistory = debounce((options) => {
+    this.props.getWordsFromHistory(options);
+  }, 500);
 
   deleteWordFromHistory = (id) => {
     this.props.deleteWordFromHistory({ id });
+  };
+
+  updateSearchQuery = (query) => {
+    this.setState({ query });
+    this.getWordsFromHistory({ query });
+  };
+
+  translateWord = (word) => {
+    this.props.push(`/?word=${word}`);
   };
 
   render() {
@@ -41,13 +56,14 @@ class History extends PureComponent {
 
     return (
       <div>
+        <Search query={this.state.query} updateSearchQuery={this.updateSearchQuery} />
         {words.map(record => (
           <HistoryLine
-            key={record.id}
             id={record.id}
-            word={record.word}
+            key={record.id}
             onClick={this.translateWord}
             onDelete={this.deleteWordFromHistory}
+            word={record.word}
           />
         ))}
       </div>

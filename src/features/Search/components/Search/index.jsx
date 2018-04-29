@@ -28,8 +28,8 @@ export default class Search extends PureComponent {
         <AutoComplete
           dataSource={tips}
           filter={() => true}
+          floatingLabelText="Введите слово для поиска"
           fullWidth
-          hintText="Введите слово для поиска"
           maxSearchResults={5}
           onNewRequest={this.searchWord}
           onUpdateInput={this.props.updateText}

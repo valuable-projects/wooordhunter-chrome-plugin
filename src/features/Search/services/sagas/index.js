@@ -36,6 +36,7 @@ function* fetchWord(action) {
 
     yield call(Words.save.bind(Words), wordInfo);
   } catch (err) {
+    console.error(err);
     yield put({ type: FAILURE_LOAD_WORD });
   }
 }
@@ -50,6 +51,7 @@ function* fetchWordTips(action) {
 
     yield put({ type: FINISHED_LOAD_WORD_TIPS, payload: data });
   } catch (err) {
+    console.error(err);
     yield put({ type: FAILURE_LOAD_WORD_TIPS });
   }
 }
