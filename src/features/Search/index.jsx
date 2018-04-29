@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import queryString from 'query-string';
+import parse from 'url-parse';
 
 import Sound from 'react-sound';
 
@@ -44,7 +44,7 @@ class Search extends PureComponent {
     const { search } = this.props.location;
 
     if (search) {
-      const { word } = queryString.parse(search);
+      const { word } = parse(search, true).query;
 
       this.props.callbacks.updateText(word);
       this.props.callbacks.translateWord(word);
