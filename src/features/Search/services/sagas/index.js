@@ -9,27 +9,33 @@ import {
   FAILURE_LOAD_WORD_TIPS,
 } from '../constants';
 import parse from '../parseWooordhuntPage';
+import WordsHistory from '../../../../services/dao/WordsHistory';
 
 const searchApi = 'http://wooordhunt.ru/word/';
 const tipsApi = 'http://wooordhunt.ru/get_tips.php?abc=';
 
 const proxyUrl = 'http://localhost:8000/';
 
+const Words = new WordsHistory();
+
 function* fetchWord(action) {
   try {
     const word = action.payload.word.toLocaleLowerCase();
-    const headers = { 'Wooorhunt-Destination-Header': searchApi + word };
-    const response = yield call(fetch, proxyUrl, { headers });
+    let wordInfo = yield call(Words.getByWord.bind(Words), word);
 
-    const text = yield call(response.text.bind(response));
+    if (!wordInfo) {
+      const headers = { 'Wooorhunt-Destination-Header': searchApi + word };
+      const response = yield call(fetch, proxyUrl, { headers });
 
-    const parsedPage = yield call(parse, word, text);
+      const text = yield call(response.text.bind(response));
 
-    console.log('parsedPage', parsedPage);
+      wordInfo = yield call(parse, word, text);
+    }
 
-    yield put({ type: FINISHED_LOAD_WORD, payload: { wordInfo: parsedPage } });
+    yield put({ type: FINISHED_LOAD_WORD, payload: { wordInfo } });
+
+    yield call(Words.save.bind(Words), wordInfo);
   } catch (err) {
-    console.log('err', err);
     yield put({ type: FAILURE_LOAD_WORD });
   }
 }
@@ -44,7 +50,6 @@ function* fetchWordTips(action) {
 
     yield put({ type: FINISHED_LOAD_WORD_TIPS, payload: data });
   } catch (err) {
-    console.log('err', err);
     yield put({ type: FAILURE_LOAD_WORD_TIPS });
   }
 }

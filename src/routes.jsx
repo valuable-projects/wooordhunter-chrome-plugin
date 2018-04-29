@@ -16,6 +16,7 @@ import './index.css';
 import Layout from './features/Layout';
 import App from './features/App';
 import Search from './features/Search';
+import History from './features/History';
 
 const history = createHistory();
 
@@ -28,7 +29,7 @@ const store = createStore(
     ...reducers,
     router: routerReducer,
   }),
-  applyMiddleware(middleware, sagaMiddleware, logger)
+  applyMiddleware(middleware, sagaMiddleware, logger),
 );
 
 sagaMiddleware.run(sagas);
@@ -38,10 +39,10 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <Layout>
         <Route exact path="/" component={Search} />
-        <Route path="/history" component={App} />
+        <Route path="/history" component={History} />
         <Route path="/settings" component={App} />
       </Layout>
     </ConnectedRouter>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
 
 import Sound from 'react-sound';
 
@@ -11,6 +12,9 @@ import { UPDATE_WORD, START_LOAD_WORD_TIPS, START_LOAD_WORD } from './services/c
 
 class Search extends PureComponent {
   static propTypes = {
+    location: PropTypes.shape({
+      search: PropTypes.string,
+    }).isRequired,
     word: PropTypes.string.isRequired,
     tips: PropTypes.arrayOf(PropTypes.string).isRequired,
     wordInfo: PropTypes.shape({
@@ -35,6 +39,17 @@ class Search extends PureComponent {
       us: Sound.status.STOPPED,
     },
   };
+
+  componentDidMount() {
+    const { search } = this.props.location;
+
+    if (search) {
+      const { word } = queryString.parse(search);
+
+      this.props.callbacks.updateText(word);
+      this.props.callbacks.translateWord(word);
+    }
+  }
 
   onChangePlayerStatus = (key, status) => {
     const { playerStatus } = this.state;
