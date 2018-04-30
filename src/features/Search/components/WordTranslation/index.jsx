@@ -65,7 +65,7 @@ export default class WordTranslation extends PureComponent {
     if (isEmpty(wordInfo.word)) return <div />;
 
     return (
-      <div>
+      <div className="word-translation-container">
         <div>
           <SoundPlayer
             description="брит."

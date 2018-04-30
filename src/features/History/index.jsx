@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { push } from 'react-router-redux';
 
+import { List } from 'react-virtualized';
+
 import { GET_WORDS_FROM_HISTORY, DELETE_WORD_FROM_HISTORY } from './services/constants';
 
 import HistoryLine from './components/HistoryLine';
@@ -51,21 +53,37 @@ class History extends PureComponent {
     this.props.push(`/?word=${word}`);
   };
 
+  rowRenderer = (options) => {
+    const { index, key, style } = options;
+
+    const item = this.props.words[index];
+
+    return (
+      <HistoryLine
+        key={key}
+        id={item.id}
+        onClick={this.translateWord}
+        onDelete={this.deleteWordFromHistory}
+        word={item.word}
+        style={style}
+      />
+    );
+  };
+
   render() {
     const { words } = this.props;
 
     return (
       <div>
         <Search query={this.state.query} updateSearchQuery={this.updateSearchQuery} />
-        {words.map(record => (
-          <HistoryLine
-            id={record.id}
-            key={record.id}
-            onClick={this.translateWord}
-            onDelete={this.deleteWordFromHistory}
-            word={record.word}
-          />
-        ))}
+        <List
+          height={345}
+          rowCount={words.length}
+          rowHeight={50}
+          rowRenderer={this.rowRenderer}
+          width={360}
+          words={words}
+        />
       </div>
     );
   }

@@ -13,6 +13,7 @@ export default class HistoryLine extends PureComponent {
     id: PropTypes.number.isRequired,
     onClick: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    style: PropTypes.object,
     word: PropTypes.string,
   };
 
@@ -29,9 +30,9 @@ export default class HistoryLine extends PureComponent {
   };
 
   render() {
-    const { word } = this.props;
+    const { word, style } = this.props;
     return (
-      <Paper zDepth={3} className="history-line-paper">
+      <Paper zDepth={3} className="history-line-paper" style={style}>
         <FlatButton className="history-line-word-button" onClick={this.onClick}>
           {word}
         </FlatButton>
