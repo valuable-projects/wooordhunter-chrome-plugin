@@ -13,14 +13,15 @@ import './translation.css';
 export default class WordTranslation extends PureComponent {
   static propTypes = {
     wordInfo: PropTypes.shape({
+      commonMeanings: PropTypes.arrayOf(PropTypes.string).isRequired,
+      mainMeaning: PropTypes.string.isRequired,
+      nouns: PropTypes.arrayOf(PropTypes.string).isRequired,
+      phrases: PropTypes.arrayOf(PropTypes.string).isRequired,
       transcription: PropTypes.shape({
         uk: PropTypes.string.isRequired,
         us: PropTypes.string.isRequired,
       }),
-      nouns: PropTypes.arrayOf(PropTypes.string).isRequired,
       verbs: PropTypes.arrayOf(PropTypes.string).isRequired,
-      mainMeaning: PropTypes.string.isRequired,
-      phrases: PropTypes.arrayOf(PropTypes.string).isRequired,
       word: PropTypes.string.isRequired,
     }).isRequired,
     playerStatus: PropTypes.shape({
@@ -46,6 +47,12 @@ export default class WordTranslation extends PureComponent {
   onPlayerClick = (key) => {
     this.props.onChangePlayerStatus(key, Sound.status.PLAYING);
   };
+
+  get hasCommonMeanings() {
+    const { wordInfo } = this.props;
+
+    return !isEmpty(wordInfo.commonMeanings);
+  }
 
   get hasNounMeaning() {
     const { wordInfo } = this.props;
@@ -86,6 +93,14 @@ export default class WordTranslation extends PureComponent {
             transcription={wordInfo.transcription.us}
           />
         </div>
+        {this.hasCommonMeanings && (
+          <div>
+            <h3 className="word-translation-title">Значения</h3>
+            {wordInfo.commonMeanings.map((text, index) => (
+              <SingleWordTranslation key={index} text={text} />
+            ))}
+          </div>
+        )}
         {this.hasNounMeaning && (
           <div>
             <h3 className="word-translation-title">Существительное</h3>
