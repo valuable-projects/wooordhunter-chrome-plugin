@@ -1,5 +1,7 @@
 import jquery from 'jquery';
 
+import languages from './languages';
+
 const getPhrasesFromDiv = div =>
   div
     .html()
@@ -70,6 +72,7 @@ const getWordInfoFromHtml = (html) => {
   data.mainMeaning = '';
   data.phrases = getPhrases(content);
   data.commonMeanings = getCommonMeanging(content);
+  data.language = languages.russian;
 
   return data;
 };

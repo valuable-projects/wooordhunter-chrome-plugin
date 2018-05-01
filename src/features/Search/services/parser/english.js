@@ -1,5 +1,7 @@
 import jquery from 'jquery';
 
+import languages from './languages';
+
 const preprocessDomModel = (content) => {
   content.find('#word_action_block').remove();
   content.find('#word_action_block_help').remove();
@@ -70,6 +72,7 @@ const getWordInfoFromHtml = (html) => {
   data.verbs = getMeaning(content, verb);
   data.mainMeaning = content.find('.t_inline_en').text();
   data.phrases = getPhrases(content);
+  data.language = languages.english;
 
   return data;
 };
