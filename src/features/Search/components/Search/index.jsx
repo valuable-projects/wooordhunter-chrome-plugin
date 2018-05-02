@@ -24,7 +24,7 @@ export default class Search extends PureComponent {
     const { text, tips } = this.props;
 
     return (
-      <form className="search-body" onSubmit={this.translateWord}>
+      <div className="search-body">
         <AutoComplete
           dataSource={tips}
           filter={() => true}
@@ -36,7 +36,7 @@ export default class Search extends PureComponent {
           openOnFocus
           searchText={text}
         />
-      </form>
+      </div>
     );
   }
 }
