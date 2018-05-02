@@ -11,10 +11,7 @@ import {
 import parse from '../parser';
 import WordsHistory from '../../../../services/dao/WordsHistory';
 
-const searchApi = 'http://wooordhunt.ru/word/';
-const tipsApi = 'http://wooordhunt.ru/get_tips.php?abc=';
-
-const proxyUrl = 'http://localhost:8000/';
+import config from '../../../../config';
 
 const Words = new WordsHistory();
 
@@ -24,8 +21,10 @@ function* fetchWord(action) {
     let wordInfo = yield call(Words.getByWord.bind(Words), word);
 
     if (!wordInfo) {
-      const headers = { 'Wooorhunt-Destination-Header': searchApi + encodeURIComponent(word) };
-      const response = yield call(fetch, proxyUrl, { headers });
+      const headers = {
+        'Wooorhunt-Destination-Header': config.wooordhuntSearchApi + encodeURIComponent(word),
+      };
+      const response = yield call(fetch, config.proxyUrl, { headers });
 
       const text = yield call(response.text.bind(response));
 
@@ -44,8 +43,10 @@ function* fetchWord(action) {
 function* fetchWordTips(action) {
   try {
     const word = action.payload.word.toLocaleLowerCase();
-    const headers = { 'Wooorhunt-Destination-Header': tipsApi + encodeURIComponent(word) };
-    const response = yield call(fetch, proxyUrl, { headers });
+    const headers = {
+      'Wooorhunt-Destination-Header': config.wooordhuntTipsApi + encodeURIComponent(word),
+    };
+    const response = yield call(fetch, config.proxyUrl, { headers });
 
     const data = yield call(response.json.bind(response));
 

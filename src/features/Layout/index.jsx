@@ -8,6 +8,9 @@ import { push } from 'react-router-redux';
 
 import Header from './components/Header';
 
+import config from '../../config';
+import SettingsContext from '../../services/contexts/settings';
+
 import './layout.css';
 
 class Layout extends PureComponent {
@@ -30,7 +33,7 @@ class Layout extends PureComponent {
       <MuiThemeProvider>
         <div className="layout-body">
           <Header />
-          {this.props.children}
+          <SettingsContext.Provider value={config}>{this.props.children}</SettingsContext.Provider>
         </div>
       </MuiThemeProvider>
     );

@@ -7,6 +7,7 @@ import SoundPlayer from './components/SoundPlayer';
 
 import SingleWordTranslation from './components/SingleWordTranslation';
 import SingleSentenceExample from './components/SingleSentenceExample';
+import SettingsContext from '../../../../services/contexts/settings';
 
 import './translation.css';
 
@@ -74,24 +75,28 @@ export default class WordTranslation extends PureComponent {
     return (
       <div className="word-translation-container">
         <div>
-          <SoundPlayer
-            description="брит."
-            id="uk"
-            onClick={this.onPlayerClick}
-            onFinish={this.onFinish}
-            playerStatus={playerStatus.uk}
-            soundUrl={`http://wooordhunt.ru/data/sound/word/uk/mp3/${wordInfo.word}.mp3`}
-            transcription={wordInfo.transcription.uk}
-          />
-          <SoundPlayer
-            description="амер."
-            id="us"
-            onClick={this.onPlayerClick}
-            onFinish={this.onFinish}
-            playerStatus={playerStatus.us}
-            soundUrl={`http://wooordhunt.ru/data/sound/word/us/mp3/${wordInfo.word}.mp3`}
-            transcription={wordInfo.transcription.us}
-          />
+          <SettingsContext.Consumer>
+            {config => [
+              <SoundPlayer
+                description="брит."
+                id="uk"
+                onClick={this.onPlayerClick}
+                onFinish={this.onFinish}
+                playerStatus={playerStatus.uk}
+                soundUrl={`${config.wooordhuntUKSoundPrefix}/${wordInfo.word}.mp3`}
+                transcription={wordInfo.transcription.uk}
+              />,
+              <SoundPlayer
+                description="амер."
+                id="us"
+                onClick={this.onPlayerClick}
+                onFinish={this.onFinish}
+                playerStatus={playerStatus.us}
+                soundUrl={`${config.wooordhuntUSSoundPrefix}/${wordInfo.word}.mp3`}
+                transcription={wordInfo.transcription.us}
+              />,
+            ]}
+          </SettingsContext.Consumer>
         </div>
         {this.hasCommonMeanings && (
           <div>
