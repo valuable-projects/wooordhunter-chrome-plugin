@@ -7,15 +7,20 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import Header from './components/Header';
+import Delayable from '../../components/Delayable';
+import Loader from '../../components/Loader';
 
 import config from '../../config';
 import SettingsContext from '../../services/contexts/settings';
+
+import { selectIsLoadingFlag } from '../../services/selectors';
 
 import './layout.css';
 
 class Layout extends PureComponent {
   static propTypes = {
     children: PropTypes.array.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     push: PropTypes.func.isRequired,
   };
@@ -33,10 +38,15 @@ class Layout extends PureComponent {
   }
 
   render() {
+    const { isLoading } = this.props;
+
     return (
       <MuiThemeProvider>
         <div className="layout-body">
           <Header />
+          <Delayable active={isLoading}>
+            <Loader />
+          </Delayable>
           <SettingsContext.Provider value={config}>
             {/* We need to put div here, because Provider can wrap only single element */}
             <div>{this.props.children}</div>
@@ -47,8 +57,12 @@ class Layout extends PureComponent {
   }
 }
 
+const mapStateToProps = state => ({
+  isLoading: selectIsLoadingFlag(state),
+});
+
 const mapDispatchToProps = {
   push,
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(Layout));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Layout));

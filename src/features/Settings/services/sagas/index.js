@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { CLEAR_HISTORY } from '../constants';
 
@@ -14,6 +14,6 @@ export function* clearWordsHistory() {
   }
 }
 
-export default function* wordHistorySagas() {
-  yield takeLatest(CLEAR_HISTORY, clearWordsHistory);
+export default function* wordHistorySagas(decorate) {
+  yield takeEvery(CLEAR_HISTORY, decorate(clearWordsHistory));
 }

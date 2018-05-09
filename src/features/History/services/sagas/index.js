@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import {
   GET_WORDS_FROM_HISTORY,
@@ -42,7 +42,7 @@ export function* deleteWordFromHistory(action) {
   }
 }
 
-export default function* wordHistorySagas() {
-  yield takeLatest(GET_WORDS_FROM_HISTORY, getWordFromHistory);
-  yield takeLatest(DELETE_WORD_FROM_HISTORY, deleteWordFromHistory);
+export default function* wordHistorySagas(decorate) {
+  yield takeEvery(GET_WORDS_FROM_HISTORY, decorate(getWordFromHistory));
+  yield takeEvery(DELETE_WORD_FROM_HISTORY, decorate(deleteWordFromHistory));
 }

@@ -1,0 +1,2 @@
+export const LOADING_STARTED = Symbol('LOADING_STARTED');
+export const LOADING_FINISHED = Symbol('LOADING_FINISHED');
