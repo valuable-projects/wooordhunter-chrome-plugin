@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import {
   START_LOAD_WORD,
@@ -29,11 +29,11 @@ function* fetchWord(action) {
       const text = yield call(response.text.bind(response));
 
       wordInfo = yield call(parse, word, text);
+
+      yield call(Words.save.bind(Words), wordInfo);
     }
 
     yield put({ type: FINISHED_LOAD_WORD, payload: { wordInfo } });
-
-    yield call(Words.save.bind(Words), wordInfo);
   } catch (err) {
     console.error(err);
     yield put({ type: FAILURE_LOAD_WORD });
@@ -57,7 +57,7 @@ function* fetchWordTips(action) {
   }
 }
 
-export default function* wordSagas() {
-  yield takeLatest(START_LOAD_WORD, fetchWord);
-  yield takeLatest(START_LOAD_WORD_TIPS, fetchWordTips);
+export default function* wordSagas(decorate) {
+  yield takeEvery(START_LOAD_WORD, decorate(fetchWord));
+  yield takeEvery(START_LOAD_WORD_TIPS, decorate(fetchWordTips));
 }
