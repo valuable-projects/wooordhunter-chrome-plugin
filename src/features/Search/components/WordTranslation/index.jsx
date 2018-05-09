@@ -101,26 +101,24 @@ export default class WordTranslation extends PureComponent {
         {this.hasCommonMeanings && (
           <div>
             <h3 className="word-translation-title">Значения</h3>
-            {wordInfo.commonMeanings.map((text, index) => (
-              <SingleWordTranslation key={index} text={text} />
-            ))}
+            {wordInfo.commonMeanings.map(text => <SingleWordTranslation text={text} />)}
           </div>
         )}
         {this.hasNounMeaning && (
           <div>
             <h3 className="word-translation-title">Существительное</h3>
-            {wordInfo.nouns.map((text, index) => <SingleWordTranslation key={index} text={text} />)}
+            {wordInfo.nouns.map(text => <SingleWordTranslation text={text} />)}
           </div>
         )}
         {this.hasVerbMeaning && (
           <div>
             <h3 className="word-translation-title">Глагол</h3>
-            {wordInfo.verbs.map((text, index) => <SingleWordTranslation key={index} text={text} />)}
+            {wordInfo.verbs.map(text => <SingleWordTranslation text={text} />)}
           </div>
         )}
         <div>
           <h3 className="word-translation-title">Словосочетания</h3>
-          {wordInfo.phrases.map((text, index) => <SingleSentenceExample key={index} text={text} />)}
+          {wordInfo.phrases.map(text => <SingleSentenceExample text={text} />)}
         </div>
       </div>
     );

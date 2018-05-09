@@ -104,4 +104,4 @@ const mapDispatchToProps = (dispatch) => {
   return { getWordsFromHistory, push: (...args) => dispatch(push(...args)), deleteWordFromHistory };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(History));
+export default connect(mapStateToProps, mapDispatchToProps)(History);

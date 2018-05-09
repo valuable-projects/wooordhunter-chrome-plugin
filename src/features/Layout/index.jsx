@@ -20,6 +20,10 @@ class Layout extends PureComponent {
     push: PropTypes.func.isRequired,
   };
 
+  static contextTypes = {
+    store: PropTypes.object,
+  };
+
   componentWillMount() {
     const { location } = this.props;
 
@@ -33,7 +37,10 @@ class Layout extends PureComponent {
       <MuiThemeProvider>
         <div className="layout-body">
           <Header />
-          <SettingsContext.Provider value={config}>{this.props.children}</SettingsContext.Provider>
+          <SettingsContext.Provider value={config}>
+            {/* We need to put div here, because Provider can wrap only single element */}
+            <div>{this.props.children}</div>
+          </SettingsContext.Provider>
         </div>
       </MuiThemeProvider>
     );
