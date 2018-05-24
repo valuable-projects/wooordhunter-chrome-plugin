@@ -1,5 +1,5 @@
 export default {
-  proxyUrl: 'http://localhost:8000/',
+  proxyUrl: process.env.REACT_APP_API_ENDPOINT || 'https://wooordhunter-backend-proxy.now.sh/',
   wooordhuntSearchApi: 'http://wooordhunt.ru/word/',
   wooordhuntTipsApi: 'http://wooordhunt.ru/get_tips.php?abc=',
   wooordhuntUKSoundPrefix: 'http://wooordhunt.ru/data/sound/word/uk/mp3',
